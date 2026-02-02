@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Opération 10 000 Sourires pour Muriel 😄</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #ffe259, #ffa751);
+      padding: 30px;
+    }
+
+    .layout {
+      display: flex;
+      gap: 30px;
+      justify-content: center;
+      align-items: flex-start;
+    }
+
+    /* IMAGE À GAUCHE */
+    .left img {
+      width: 820px;
+      max-width: 100%;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    }
+
+    /* CONTENU À DROITE */
+    .right {
+      max-width: 750px;
+      background: white;
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 2.5em;
+    }
+
+    #counter {
+      font-size: 4em;
+      margin: 20px 0;
+    }
+
+    button {
+      font-size: 1.2em;
+      padding: 12px 25px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      background-color: #ffcc00;
+      margin-bottom: 20px;
+    }
+
+    button:hover {
+      background-color: #ffb700;
+    }
+
+    /* TEXTE INTRO */
+    .intro-text {
+      text-align: left;
+      line-height: 1.6;
+      margin-bottom: 30px;
+    }
+
+    .intro-text h2 {
+      text-align: center;
+      color: #ff9800;
+    }
+
+    .intro-text .note {
+      text-align: center;
+      font-style: italic;
+      font-size: 0.9em;
+    }
+
+    .intro-text ul {
+      margin-left: 20px;
+    }
+
+    .intro-text .call {
+      font-weight: bold;
+      margin-top: 15px;
+    }
+
+    .intro-text .thanks {
+      text-align: center;
+      font-weight: bold;
+      margin-top: 20px;
+    }
+
+    /* COMMENTAIRES */
+    .comments {
+      margin-top: 20px;
+      text-align: left;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      font-size: 1em;
+    }
+
+    textarea {
+      height: 80px;
+    }
+
+    .comment {
+      background: #f4f4f4;
+      padding: 10px;
+      border-radius: 8px;
+      margin-top: 10px;
+    }
+
+    .comment strong {
+      color: #ff9800;
+    }
+
+    /* MOBILE */
+    @media (max-width: 900px) {
+      .layout {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="layout">
+
+  <!-- IMAGE À GAUCHE -->
+  <div class="left">
+    <img src="affiche.jpg" alt="Opération 10 000 Sourires pour Muriel">
+  </div>
+
+  <!-- CONTENU À DROITE -->
+  <div class="right">
+
+    <h1>😄 Challenge 10 000 Sourires 😄</h1>
+
+    <div id="counter">0 😄</div>
+    <button onclick="addSmile()">Ajouter un sourire 😊</button>
+
+    <!-- TEXTE DE PRÉSENTATION -->
+    <div class="intro-text">
+      <h2>Cagnotte des 10 000 Sourires pour Muriel</h2>
+
+      <p class="note">
+        (Cagnotte 100 % symbolique, aucun don d’argent n’est demandé)
+      </p>
+
+      <p>
+        Muriel parlait souvent de “10 000”… sans jamais préciser quoi.
+        Alors nous avons décidé de lui offrir <strong>10 000 sourires</strong> :
+      </p>
+
+      <ul>
+        <li>Un pour chaque moment partagé,</li>
+        <li>Un pour chaque éclat de rire,</li>
+        <li>Un pour chaque chute qui nous a fait rire avec elle,</li>
+        <li>Un pour chaque geste de gentillesse,</li>
+        <li>Et un de plus, simplement parce que sourire, cela fait du bien.</li>
+      </ul>
+
+      <p>
+        Et comme Muriel sera officiellement à la retraite le
+        <strong>1er mars 2026</strong>,
+        il fallait marquer le coup avec une avalanche de sourires.
+      </p>
+
+      <p class="call">
+        👉 Cliquez sur <strong>“Ajouter un sourire 😊”</strong> pour offrir un sourire à Muriel.
+      </p>
+
+      <p>
+        Parce qu’une retraite, ça commence toujours mieux avec un sourire…
+        <strong>ou 10 000</strong>.
+      </p>
+
+      <p class="thanks">
+        Merci pour votre sourire 💛
+      </p>
+    </div>
+
+    <!-- COMMENTAIRES -->
+    <div class="comments">
+      <h2>💬 Laisser un message</h2>
+      <input id="nameInput" placeholder="Votre nom">
+      <textarea id="commentInput" placeholder="Votre message..."></textarea>
+      <button onclick="addComment()">Publier</button>
+
+      <div id="commentList"></div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  /* COMPTEUR */
+  let count = localStorage.getItem("smileyCount") || 0;
+  count = parseInt(count);
+  document.getElementById("counter").innerText = count + " 😄";
+
+  function addSmile() {
+    count++;
+    localStorage.setItem("smileyCount", count);
+    document.getElementById("counter").innerText = count + " 😄";
+  }
+
+  /* COMMENTAIRES */
+  let comments = JSON.parse(localStorage.getItem("comments")) || [];
+  const commentList = document.getElementById("commentList");
+
+  function displayComments() {
+    commentList.innerHTML = "";
+    comments.forEach(c => {
+      const div = document.createElement("div");
+      div.className = "comment";
+      div.innerHTML = "<strong>" + c.name + "</strong><br>" + c.text;
+      commentList.appendChild(div);
+    });
+  }
+
+  function addComment() {
+    const name = document.getElementById("nameInput").value.trim();
+    const text = document.getElementById("commentInput").value.trim();
+    if (name === "" || text === "") return;
+
+    comments.unshift({ name: name, text: text });
+    localStorage.setItem("comments", JSON.stringify(comments));
+    document.getElementById("commentInput").value = "";
+    displayComments();
+  }
+
+  displayComments();
+</script>
+
+</body>
+</html>
